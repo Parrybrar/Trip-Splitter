@@ -1,0 +1,48 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  trips     TripMember[]
+  expenses  Expense[]
+}
+
+model Trip {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  startDate   DateTime @default(now())
+  members     TripMember[]
+  expenses    Expense[]
+}
+
+model TripMember {
+  id        String   @id @default(uuid())
+  role      String   @default("MEMBER")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id])
+  @@unique([userId, tripId])
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  description String
+  amount      Decimal
+  date        DateTime @default(now())
+  payerId     String
+  payer       User     @relation(fields: [payerId], references: [id])
+  tripId      String
+  trip        Trip     @relation(fields: [tripId], references: [id])
+}
