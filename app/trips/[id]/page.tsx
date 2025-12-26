@@ -1,4 +1,5 @@
 // app/trips/[id]/page.tsx
+export const dynamic = 'force-dynamic';
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
@@ -107,8 +108,8 @@ export default async function TripDetailsPage({ params }: Props) {
                         <div
                             key={user.id}
                             className={`p-4 rounded-lg border ${user.balance >= 0
-                                    ? "bg-green-900/20 border-green-800" // Green if they are owed money
-                                    : "bg-red-900/20 border-red-800"     // Red if they owe money
+                                ? "bg-green-900/20 border-green-800" // Green if they are owed money
+                                : "bg-red-900/20 border-red-800"     // Red if they owe money
                                 }`}
                         >
                             <div className="flex justify-between items-center mb-2">
